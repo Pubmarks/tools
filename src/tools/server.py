@@ -6,9 +6,6 @@ from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from tools.app import mcp
-from tools.config import cfg
-
 # Import tool modules so their @mcp.tool() decorators register with the mcp instance.
 import tools.tools.avgpe  # noqa: F401
 import tools.tools.fundamentals  # noqa: F401
@@ -20,6 +17,8 @@ import tools.tools.news  # noqa: F401
 import tools.tools.ohlcv  # noqa: F401
 import tools.tools.statement  # noqa: F401
 import tools.tools.vwap  # noqa: F401
+from tools.app import mcp
+from tools.config import cfg
 
 
 @mcp.custom_route("/healthz", methods=["GET"])

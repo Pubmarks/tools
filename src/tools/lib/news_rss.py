@@ -5,7 +5,6 @@ import re
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from email.utils import parsedate_to_datetime
-from typing import Any
 
 try:
     from curl_cffi import requests as curl_requests

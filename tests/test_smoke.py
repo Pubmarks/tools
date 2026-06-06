@@ -1,5 +1,5 @@
 """Smoke tests — each tool wrapper called with mocked lib functions (no network)."""
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pandas as pd
 import pytest

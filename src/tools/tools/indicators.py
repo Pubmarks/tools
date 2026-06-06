@@ -1,6 +1,10 @@
 from tools.app import mcp
 from tools.envelope import Artifact, ToolResult
-from tools.lib.indicators import SUPPORTED_INDICATORS, indicator_series, indicator_window_text
+from tools.lib.indicators import (
+    SUPPORTED_INDICATORS,
+    indicator_series,
+    indicator_window_text,
+)
 from tools.lib.ticker_safe import safe_ticker_component
 
 
