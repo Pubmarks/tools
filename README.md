@@ -107,8 +107,9 @@ artifact per fetched article body and a manifest.
 | `TOOLS_CACHE_DIR` | On-disk cache directory for price history | `/data/cache` |
 | `TOOLS_OHLCV_CACHE_YEARS` | Rolling window of price history to cache | `5` |
 | `FRED_API_KEY` | API key for macroeconomic series (required for `fetch_macro_data`) | — |
-| `AVGPE_BASE_URL` | Base URL for the valuation-stats data source | — |
+| `AVGPE_BASE_URL` | Base URL for the valuation-stats data source (`{ticker}` is interpolated) | `https://pubmarks.github.io/datasets/stocks/{ticker}` |
 | `MCP_HOST` / `MCP_PORT` | Bind address for the server | `0.0.0.0` / `8080` |
+| `MCP_ALLOWED_HOSTS` | Comma-separated `Host:` allowlist for DNS-rebinding protection (`:*` matches any port) | `localhost:*,127.0.0.1:*,[::1]:*,host.containers.internal:*,host.docker.internal:*` |
 | `LOG_LEVEL` | Log verbosity | `INFO` |
 
 Copy `.env.example` to `.env` to set these locally.
