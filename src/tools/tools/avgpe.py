@@ -25,14 +25,14 @@ def _fetch_avgpe(ticker: str) -> tuple[dict | None, dict | None]:
     return _fetch_json(f"{base}/avgpe_5.json"), _fetch_json(f"{base}/avgpe_10.json")
 
 
-def _valuation_signal(p_e_last: float, p_e_median: float) -> str:
+def _valuation_signal(p_e_last: float, p_e_median: float, window: str) -> str:
     if p_e_median <= 0:
         return "Valuation signal: median P/E not available"
     pct = (p_e_last - p_e_median) / p_e_median * 100
     direction = "ABOVE" if pct >= 0 else "BELOW"
     return (
         f"Valuation signal: current P/E ({p_e_last:.2f}) is "
-        f"{abs(pct):.0f}% {direction} 5-year median ({p_e_median:.2f})"
+        f"{abs(pct):.0f}% {direction} {window}-year median ({p_e_median:.2f})"
     )
 
 
@@ -54,7 +54,7 @@ def _format_text(data: dict, window: str) -> str:
         f"EPS (last):                 ${_fmt(data.get('eps_last'))}",
         f"Price (last):               ${_fmt(data.get('price_last'))}",
         "",
-        "5-Year P/E Statistics (all quarters):",
+        f"{window}-Year P/E Statistics (all quarters):",
         f"  Median:                   {_fmt(p_e_median)}   <- primary baseline",
         f"  Shiller (CAPE-{window}yr):      {_fmt(data.get('p_e_shiller'))}",
         f"  Harmonic mean:            {_fmt(data.get('p_e_harmonic'))}",
@@ -63,7 +63,7 @@ def _format_text(data: dict, window: str) -> str:
         f"  Min:                      {_fmt(data.get('p_e_min'))}  ({_fmt(data.get('p_e_min_date'))})",
         f"  Max:                      {_fmt(data.get('p_e_max'))}  ({_fmt(data.get('p_e_max_date'))})",
         "",
-        "5-Year P/E Statistics (profitable quarters only):",
+        f"{window}-Year P/E Statistics (profitable quarters only):",
         f"  Median (lossy excl.):     {_fmt(data.get('p_e_median_lossy'))}",
         f"  Mean (lossy excl.):       {_fmt(data.get('p_e_mean_lossy'))}",
         f"  Mode (lossy excl.):       {_fmt(data.get('p_e_mode_lossy'))}",
@@ -73,7 +73,7 @@ def _format_text(data: dict, window: str) -> str:
     ]
 
     if isinstance(p_e_last, (int, float)) and isinstance(p_e_median, (int, float)):
-        lines.append(_valuation_signal(float(p_e_last), float(p_e_median)))
+        lines.append(_valuation_signal(float(p_e_last), float(p_e_median), window))
 
     return "\n".join(lines) + "\n"
 
