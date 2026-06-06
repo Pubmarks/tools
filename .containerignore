@@ -1,0 +1,10 @@
+.git
+.github
+tests/
+*.pyc
+__pycache__
+.venv
+.env
+*.md
+BLUEPRINT.md
+README.md
