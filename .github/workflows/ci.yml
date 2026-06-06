@@ -47,6 +47,9 @@ jobs:
           fi
           echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
 
+      - name: Set up QEMU for multi-arch
+        uses: docker/setup-qemu-action@v3
+
       - name: Build image
         id: build
         uses: redhat-actions/buildah-build@v2
@@ -54,6 +57,7 @@ jobs:
           image: tools
           tags: ${{ steps.tags.outputs.tags }}
           containerfiles: Containerfile
+          platforms: linux/amd64,linux/arm64
 
       - name: Push to GHCR
         uses: redhat-actions/push-to-registry@v2
