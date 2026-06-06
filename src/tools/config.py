@@ -32,6 +32,23 @@ class _Config:
         return os.environ.get("MCP_HOST", "0.0.0.0")
 
     @property
+    def allowed_hosts(self) -> list[str]:
+        """Host header allowlist for DNS-rebinding protection.
+
+        The server binds 0.0.0.0 to serve cross-container clients, so the
+        FastMCP localhost-only auto-default is too strict and rejects callers
+        reaching us via the container gateway (host.containers.internal /
+        host.docker.internal) with 421. Allowlist those explicitly. The `:*`
+        suffix is a wildcard-port pattern understood by the transport
+        middleware.
+        """
+        raw = os.environ.get(
+            "MCP_ALLOWED_HOSTS",
+            "localhost:*,127.0.0.1:*,[::1]:*,host.containers.internal:*,host.docker.internal:*",
+        )
+        return [h.strip() for h in raw.split(",") if h.strip()]
+
+    @property
     def port(self) -> int:
         return int(os.environ.get("MCP_PORT", "8080"))
 
