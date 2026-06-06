@@ -5,7 +5,6 @@ import uvicorn
 from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-from starlette.routing import Mount, Route
 
 from tools.app import mcp
 from tools.config import cfg
@@ -23,17 +22,13 @@ import tools.tools.statement  # noqa: F401
 import tools.tools.vwap  # noqa: F401
 
 
+@mcp.custom_route("/healthz", methods=["GET"])
 async def _healthz(request: Request) -> JSONResponse:
     return JSONResponse({"status": "ok"})
 
 
 def create_app() -> Starlette:
-    return Starlette(
-        routes=[
-            Route("/healthz", _healthz),
-            Mount("/", app=mcp.streamable_http_app()),
-        ]
-    )
+    return mcp.streamable_http_app()
 
 
 if __name__ == "__main__":

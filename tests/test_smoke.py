@@ -69,7 +69,7 @@ def test_fetch_macro_returns_envelope():
 
 
 def test_fetch_avgpe_not_available():
-    with patch("tools.tools.avgpe._fetch_avgpe", return_value=None):
+    with patch("tools.tools.avgpe._fetch_avgpe", return_value=(None, None)):
         from tools.tools.avgpe import fetch_avgpe
         result = fetch_avgpe("AAPL")
     assert result["artifacts"] == []
@@ -78,26 +78,28 @@ def test_fetch_avgpe_not_available():
 
 def test_fetch_avgpe_with_data():
     mock_data = {
-        "ticker": "aapl",
+        "ticker": "AAPL",
         "p_e_last": 28.5,
-        "p_e_median_5yr": 26.0,
+        "p_e_median": 26.0,
         "eps_last": 6.5,
         "price_last": 185.0,
-        "p_e_shiller_5yr": 27.1,
-        "p_e_mean_5yr": 27.3,
-        "p_e_mode_5yr": 25.0,
+        "p_e_shiller": 27.1,
+        "p_e_harmonic": 27.0,
+        "p_e_mean": 27.3,
+        "p_e_mode": 25.0,
         "p_e_min": 14.0,
         "p_e_min_date": "2020-03-20",
         "p_e_max": 38.0,
         "p_e_max_date": "2021-01-04",
-        "p_e_lossy_5yr": 0,
         "start_date": "2019-01-01",
         "end_date": "2024-01-01",
     }
-    with patch("tools.tools.avgpe._fetch_avgpe", return_value=mock_data):
+    with patch("tools.tools.avgpe._fetch_avgpe", return_value=(mock_data, mock_data)):
         from tools.tools.avgpe import fetch_avgpe
         result = fetch_avgpe("AAPL")
-    assert result["artifacts"][0]["path_hint"] == "avgpe.txt"
+    assert len(result["artifacts"]) == 2
+    assert result["artifacts"][0]["path_hint"] == "avgpe_5.txt"
+    assert result["artifacts"][1]["path_hint"] == "avgpe_10.txt"
     assert "ABOVE" in result["artifacts"][0]["content"] or "BELOW" in result["artifacts"][0]["content"]
 
 

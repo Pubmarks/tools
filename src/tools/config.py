@@ -24,7 +24,7 @@ class _Config:
     def avgpe_base_url(self) -> str:
         return os.environ.get(
             "AVGPE_BASE_URL",
-            "https://donnie.github.io/pubmarks/stocks/{ticker}/pe-averages.json",
+            "https://pubmarks.github.io/datasets/stocks/{ticker}",
         )
 
     @property
