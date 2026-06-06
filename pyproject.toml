@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tools"
+version = "0.1.0"
+description = "Market-data MCP server"
+requires-python = ">=3.11"
+dependencies = [
+  "mcp[cli]>=1.3",
+  "uvicorn>=0.30",
+  "starlette>=0.40",
+  "pydantic>=2.0",
+  "pandas>=2.0",
+  "yfinance>=0.2.40",
+  "stockstats>=0.6.2",
+  "python-dateutil>=2.8",
+  "curl-cffi>=0.15.0",
+  "beautifulsoup4>=4.12",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tools"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0",
+    "pytest-asyncio>=1.4",
+    "ruff>=0.4",
+]
