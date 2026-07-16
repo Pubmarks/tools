@@ -114,6 +114,26 @@ artifact per fetched article body and a manifest.
 
 Copy `.env.example` to `.env` to set these locally.
 
+## Using as a Python library
+
+Install the package (path, editable, or git), then call the same `fetch_*` functions the MCP
+server exposes. Flattened imports are preferred:
+
+```python
+from tools.ohlcv import fetch_ohlcv
+from tools.fundamentals import fetch_fundamentals
+
+result = fetch_ohlcv("AAPL", "2024-01-01", "2025-01-01")
+# {"summary": "...", "artifacts": [{"path_hint", "media_type", "content"}]}
+```
+
+The nested paths still work (`from tools.tools.ohlcv import fetch_ohlcv`). For native return
+types (e.g. DataFrames), import from `tools.lib.*` instead.
+
+Set the same environment variables as the server (see Configuration). Importing a tool module
+registers it on the in-process FastMCP singleton as a side effect; that is harmless for library
+callers that do not serve MCP.
+
 ## Development
 
 ```sh
