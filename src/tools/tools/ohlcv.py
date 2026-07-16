@@ -21,7 +21,7 @@ def fetch_ohlcv(symbol: str, start: str, end: str) -> dict:
             artifacts=[],
         ).model_dump()
 
-    csv_content = df.round(2).to_csv(index=False)
+    csv_content = df.to_csv(index=False)
     return ToolResult(
         summary=f"{symbol.upper()} OHLCV {start}..{end} — {len(df)} rows",
         artifacts=[
